@@ -3,23 +3,120 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>Leonida Trophy Atlas — GTA VI Trophy Guide &amp; Tracker</title>
+<meta name="description" content="An offline guide and tracker for all 55 PlayStation 5 trophies of Grand Theft Auto VI: official names, descriptions and grades, cited guides, a platinum roadmap and missable flags.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="top">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">LA</div>
+    <div>
+      <h1>Leonida Trophy Atlas</h1>
+      <p class="tag">Every GTA VI trophy, mapped — guide, tracker &amp; road to the Platinum.</p>
+    </div>
+  </div>
+  <div class="progress" id="progressBox" role="status">
+    <div class="progress-line"><span id="progressText">0 of 55 earned</span><span id="progressPct">0%</span></div>
+    <div class="bar"><div class="fill" id="progressFill" style="width:0%"></div></div>
+    <div class="by-grade" id="byGrade"></div>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
+
+<nav class="views" aria-label="Views">
+  <button type="button" class="view-tab active" data-view="checklist" id="tab-checklist">Checklist</button>
+  <button type="button" class="view-tab" data-view="roadmap" id="tab-roadmap">Platinum roadmap</button>
+  <button type="button" class="view-tab" data-view="sources" id="tab-sources">Sources &amp; notes</button>
+  <span class="view-spacer"></span>
+  <button type="button" id="exportBtn" class="tool-btn">Export progress</button>
+  <label class="tool-btn import-label">Import progress <input id="importFile" type="file" accept="application/json,.json"></label>
+  <button type="button" id="resetBtn" class="tool-btn danger">Reset</button>
+</nav>
+
+<main>
+  <section id="view-checklist" class="view">
+    <div class="layout">
+      <aside class="filters" aria-label="Filters">
+        <label class="field">Search
+          <input id="search" type="search" placeholder="Trophy name…" autocomplete="off">
+        </label>
+        <fieldset class="field">
+          <legend>Kind</legend>
+          <div class="chips" id="kindChips"></div>
+        </fieldset>
+        <label class="field">Grade
+          <select id="gradeFilter">
+            <option value="all">All grades</option>
+            <option value="platinum">Platinum</option>
+            <option value="gold">Gold</option>
+            <option value="silver">Silver</option>
+            <option value="bronze">Bronze</option>
+          </select>
+        </label>
+        <label class="field">Status
+          <select id="statusFilter">
+            <option value="all">Earned &amp; unearned</option>
+            <option value="earned">Earned only</option>
+            <option value="unearned">Not earned yet</option>
+          </select>
+        </label>
+        <label class="check">
+          <input id="spoilerToggle" type="checkbox" checked>
+          <span>Hide story trophies until earned <em>(spoiler-free)</em></span>
+        </label>
+        <label class="check">
+          <input id="missableOnly" type="checkbox">
+          <span>Missable only</span>
+        </label>
+        <p class="filter-note" id="filterCount"></p>
+        <p class="filter-note warn">One trophy can be missed: <button type="button" class="linklike" id="missableJump">Positive Mental Attitude</button> — do Lucia's Chapter 1 meditation before Chapter 1 ends.</p>
+      </aside>
+
+      <div class="list-col">
+        <table class="trophies" id="trophyTable">
+          <thead><tr><th class="c-earn">Earned</th><th>Trophy</th><th class="c-grade">Grade</th><th class="c-guide">Guide</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <p class="empty" id="emptyMsg" hidden>No trophies match these filters.</p>
+      </div>
+
+      <aside class="detail" id="detail" aria-label="Trophy guide" hidden>
+        <button type="button" class="detail-close" id="detailClose" aria-label="Close guide">×</button>
+        <div id="detailBody"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="view-roadmap" class="view" hidden>
+    <h2>The road to the Platinum</h2>
+    <p class="lede">Six stages, in the order to play them. Story missions cannot be replayed and there is no New Game Plus, so the saves in stage 1 are the whole safety net: keep one manual save at the start of every chapter and one untouched save from just before the final mission.</p>
+    <div id="roadmapStages"></div>
+  </section>
+
+  <section id="view-sources" class="view" hidden>
+    <h2>Sources &amp; notes</h2>
+    <div class="sources-body">
+      <h3>Where the facts come from</h3>
+      <p>Every trophy's guide cites its sources beside it. The full list of sources used across this guide:</p>
+      <ul id="sourceList"></ul>
+      <h3>How this guide was put together</h3>
+      <ul>
+        <li><strong>Official names, descriptions and grades</strong> are shown as PlayStation publishes them, from the PS5 list as Exophase and PSNProfiles listed it (reported by Push Square, 18 November 2026). One name carries asterisks in the official list: “T**s Ass Drug Money”.</li>
+        <li><strong>Hidden trophies (28 of 55):</strong> which trophies PlayStation hides until earned follows the published list — every story trophy is hidden, plus the secret-event trophies. The split is 27 shown, 28 hidden.</li>
+        <li><strong>Missable (1 of 55):</strong> only Positive Mental Attitude is flagged missable, as GTABase and PowerPyx both report — Lucia's Chapter 1 balcony meditation disappears after Chapter 1. Everything else stays available after the credits, including the side-story finales.</li>
+        <li><strong>Guides are written in the author's own words</strong> for this guide. They draw on the sources above and cite them; they never copy another guide's text. Where no source had confirmed a method yet (five hidden trophies at launch), the guide says so plainly instead of guessing.</li>
+        <li><strong>Counts</strong> (42 Shooting Range challenges, 14 drone race locations, 18 meditation spots, 9 activity types, 52 areas, 9 gangs, 8 garages, 500 Criminal Profile actions) come from the official list as Exophase and PSNProfiles listed it, corroborated where noted by Output Lag.</li>
+      </ul>
+      <h3>About this guide</h3>
+      <p>Leonida Trophy Atlas is an unofficial fan guide. It is not affiliated with Rockstar Games, Take-Two Interactive or PlayStation, and it shows no Rockstar logo or official artwork. It works fully offline: your checklist is saved in your browser (localStorage) and never leaves your machine.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Leonida Trophy Atlas — an unofficial fan guide for Grand Theft Auto VI (PlayStation 5). 55 trophies · 1 Platinum · 2 Gold · 6 Silver · 46 Bronze · 28 hidden · 1 missable. Not affiliated with Rockstar Games or PlayStation.</p>
+</footer>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>
